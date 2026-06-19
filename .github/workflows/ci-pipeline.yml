@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: Full CI/CD Pipeline
 
 # 1. Trigger (Kapan pipeline dijalankan)
 on:
@@ -8,7 +8,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build_test_deploy:
     # 2. Menyiapkan Mesin Virtual (Runner)
     runs-on: ubuntu-latest
 
@@ -25,6 +25,36 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    # 5. Mengecek Kompilasi (Build)
-    - name: Compile Code
+    # ANGGOTA 1 (ZHAFIR): Continuous Integration
+    - name: 1. Continuous Integration (Compile Code)
       run: mvn clean compile
+
+    # ANGGOTA 2 (GANES): Continuous Testing
+    - name: 2. Continuous Testing (Run Unit Tests)
+      run: mvn test
+
+    # ANGGOTA 3 (MARVEL): Continuous Inspection
+    - name: 3. Continuous Inspection (Code Quality via Checkstyle)
+      run: mvn checkstyle:check
+
+    # ANGGOTA 4 (ABI): Continuous Delivery
+    - name: 4a. Continuous Delivery (Package JAR)
+      run: mvn package -DskipTests
+
+    - name: 4b. Continuous Delivery (Upload Artifact)
+      uses: actions/upload-artifact@v4
+      with:
+        name: photobooth-app-ready
+        path: target/*.jar
+
+    # ANGGOTA 5 (AJI): Continuous Deployment
+    - name: 5. Continuous Deployment (Mock Deploy to Server)
+      run: |
+        echo "================================================="
+        echo "🚀 MEMULAI PROSES DEPLOYMENT KE SERVER PRODUCTION"
+        echo "================================================="
+        echo "1. Menghubungkan ke server Ubuntu via SSH..."
+        echo "2. Mengirim file photobooth-app-ready.jar..."
+        echo "3. Me-restart layanan (systemctl restart photobooth)..."
+        echo "✅ DEPLOYMENT BERHASIL! Aplikasi sudah online."
+        echo "================================================="

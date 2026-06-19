@@ -3,32 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Tugas CI/CD</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f0f8ff;
-            padding: 50px;
-        }
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            display: inline-block;
-        }
-        h1 { color: #007bff; }
-        p { color: #555; font-size: 18px; }
-    </style>
+    <title>Monkey Photobooth</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>👋 Halo Dunia!</h1>
-        <p>Ini adalah website super sederhana buatan Kelompok Dos.</p>
-        <p>Website ini membuktikan bahwa pipeline CI/CD kami sukses berjalan dari GitHub hingga ke Server!</p>
-        <br>
-        <p style="font-size: 14px; color: #aaa;">Dibuat menggunakan Java Spring Boot</p>
+    <div class="wrapper">
+        <header>
+            <h1>🐒 Pose Like A Monkey Photobooth</h1>
+            <p>Tiru pose monyet di sebelah kanan saat hitung mundur selesai!</p>
+        </header>
+        
+        <main>
+            <div id="booth-container" class="booth-container">
+                <!-- Sisi Kamera (Kiri) -->
+                <div class="camera-section">
+                    <h2>Kamera Kamu</h2>
+                    <div class="video-container">
+                        <video id="webcam" autoplay playsinline></video>
+                        <div id="timer-overlay" class="hidden">5</div>
+                        <div id="flash-overlay" class="hidden"></div>
+                    </div>
+                </div>
+                
+                <!-- Sisi Referensi Monyet (Kanan) -->
+                <div class="reference-section">
+                    <h2>Pose Monyet</h2>
+                    <div class="monkey-container">
+                        <!-- Canvas ini dipakai untuk menampilkan potongan gambar monyet yang relevan -->
+                        <canvas id="monkey-preview" width="300" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls">
+                <button id="start-btn" onclick="startPhotobooth()">📸 Mulai Photobooth!</button>
+                <p id="status-text">Siap untuk berfoto?</p>
+            </div>
+
+            <!-- Hasil Akhir -->
+            <div id="result-section" class="hidden">
+                <h2>🎉 Hasil Photobooth Kamu 🎉</h2>
+                <div class="result-container">
+                    <canvas id="final-canvas"></canvas>
+                </div>
+                <button id="download-btn" onclick="downloadPhoto()">⬇️ Download Hasil</button>
+                <button id="retry-btn" onclick="resetPhotobooth()">🔄 Foto Ulang</button>
+            </div>
+            
+        </main>
     </div>
+
+    <!-- Hidden canvas untuk menyimpan hasil jepretan kamera sebelum digabung -->
+    <canvas id="capture-canvas" style="display:none;"></canvas>
+
+    <script src="js/script.js"></script>
 </body>
 </html>
